@@ -1,0 +1,4 @@
+{
+  "wallet_name": "your_wallet_name",
+  "token_file": "~/.precog/tokens.json"
+}
