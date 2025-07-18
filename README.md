@@ -63,14 +63,76 @@ The client uses a configuration file at `~/.precog/config.json`:
 }
 ```
 
+## Authentication Requirements
+
+To check the current authentication requirements for the Precog API:
+
+```bash
+precog requirements
+```
+
+This command will fetch and display:
+- Subnet UID
+- Minimum stake amount
+
+### Basic Requirements
+
+- **Stake**: Minimum stake required on subnet 55
+- **Network**: Connected to Bittensor mainnet (not testnet)
+- **Documentation**: For more details on how to create a Bittensor wallet and staking basics, see the [official Bittensor docs](https://docs.bittensor.com/)
+
+## Staking Guide for API Access
+
+To gain access to the Precog API, you must stake Alpha to a hotkey on subnet 55.
+
+### Step-by-Step Staking Process
+
+1. **Check current requirements**:
+```bash
+precog requirements
+```
+
+2. **Check your current stake** (if any):
+```bash
+btcli stake list --wallet.name YOUR_WALLET_NAME
+```
+
+3. **Stake to subnet 55**:
+```bash
+btcli stake add \
+  --wallet.name YOUR_WALLET_NAME \
+  --subtensor.network finney \
+  --netuid 55 \
+  --amount AMOUNT_TO_STAKE
+```
+
+Example:
+```bash
+btcli stake add \
+  --wallet.name my_wallet \
+  --wallet.hotkey my_hotkey \
+  --subtensor.network finney \
+  --netuid 55 \
+  --amount 1
+```
+
+4. **Verify your stake**:
+```bash
+btcli stake show --wallet.name YOUR_WALLET_NAME --wallet.hotkey YOUR_HOTKEY_NAME --netuid 55
+```
+
+### Important Notes
+
+- Staking is done on **subnet 55** specifically
+- Check current requirements with `precog requirements` as they may change
+
 ## Authentication
 
 The client uses Bittensor wallet authentication with automatic token refresh:
 
 1. **Initial Authentication**: Run `precog authenticate` to set up
 2. **Automatic Refresh**: Access tokens refresh automatically when needed
-3. **Session Management**: Refresh tokens last 5 minutes, access tokens last 1 minute
-4. **Re-authentication**: If refresh tokens expire, run `precog authenticate` again
+3. **Re-authentication**: If refresh tokens expire, run `precog authenticate` again
 
 ## API Methods
 
@@ -146,7 +208,3 @@ For complete API documentation including request/response schemas:
 
 For issues and questions, please reach out on Discord:
 https://discordapp.com/channels/799672011265015819/1320766712508977192
-
-## Development
-
-See the [client documentation](precog_api/README.md) for detailed usage examples and development information.

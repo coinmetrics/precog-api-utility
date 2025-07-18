@@ -5,8 +5,39 @@ Interactive CLI for Precog API setup
 
 import sys
 import os
+import requests
 from .config import get_config
 from .auth import setup_authentication
+from .constants import API_URL
+
+def requirements_command():
+    """Check authentication requirements from the API"""
+    print("=== Precog API Authentication Requirements ===")
+    print()
+    
+    try:
+        response = requests.get(f"{API_URL}/auth/requirements")
+        response.raise_for_status()
+        
+        requirements = response.json()
+        
+        print("To access the Precog API, you need:")
+        print()
+
+        if "minimum_alpha_stake" in requirements:
+            print(f"• Minimum Alpha Stake: {requirements['minimum_alpha_stake']} Alpha")
+    
+        if "netuid" in requirements:
+            print(f"• Netuid: {requirements['netuid']}")
+      
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Failed to fetch requirements: {e}")
+        print()
+        print("Default requirements:")
+        print("• Subnet: 55")
+        print("• Minimum Stake: 1000 Alpha")
+    
+    print()
 
 def authenticate_command():
     """Interactive authentication command"""
@@ -122,6 +153,7 @@ def main():
         print("Usage: precog <command>")
         print("Commands:")
         print("  authenticate    Interactive authentication")
+        print("  requirements    Check API authentication requirements")
         print("  status          Show current configuration")
         sys.exit(1)
     
@@ -129,6 +161,8 @@ def main():
     
     if command == "authenticate":
         authenticate_command()
+    elif command == "requirements":
+        requirements_command()
     elif command == "status":
         config = get_config()
         if config.is_configured():
@@ -139,7 +173,7 @@ def main():
             print("Run 'precog authenticate' to get started")
     else:
         print(f"Unknown command: {command}")
-        print("Available commands: authenticate, status")
+        print("Available commands: authenticate, requirements, status")
         sys.exit(1)
 
 if __name__ == "__main__":
