@@ -8,7 +8,6 @@ import os
 import requests
 from .config import get_config
 from .auth import setup_authentication
-from .constants import API_URL
 
 def requirements_command():
     """Check authentication requirements from the API"""
@@ -16,7 +15,8 @@ def requirements_command():
     print()
     
     try:
-        response = requests.get(f"{API_URL}/auth/requirements")
+        api_url = os.getenv("API_URL", "https://precog-api.example.com")
+        response = requests.get(f"{api_url}/auth/requirements")
         response.raise_for_status()
         
         requirements = response.json()

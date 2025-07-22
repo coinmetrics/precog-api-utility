@@ -10,7 +10,6 @@ from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, Optional
 
 from .config import get_config
-from .constants import API_URL
 
 
 def setup_authentication() -> bool:
@@ -33,7 +32,7 @@ def setup_authentication() -> bool:
         print("Please configure wallet name first.")
         return False
     
-    api_url = API_URL
+    api_url = os.getenv("API_URL", "https://precog-api.example.com")
     token_file = config.get_token_file()
     
     # Create token directory if it doesn't exist
@@ -234,7 +233,7 @@ def refresh_tokens_if_needed() -> bool:
     if now < (access_expires - timedelta(seconds=30)):
         return False  # Token still has more than 30 seconds
     
-    refreshed = refresh_access_token(tokens['refresh_token'], API_URL)
+    refreshed = refresh_access_token(tokens['refresh_token'], os.getenv("API_URL", "https://precog-api.example.com"))
     if refreshed:
         tokens.update(refreshed)
         save_tokens(tokens)

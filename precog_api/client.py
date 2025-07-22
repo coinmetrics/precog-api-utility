@@ -9,7 +9,6 @@ from typing import Dict, Any, Optional
 
 from .auth import get_valid_access_token, refresh_tokens_if_needed
 from .config import get_config
-from .constants import API_URL
 
 
 class PrecogClient:
@@ -34,7 +33,7 @@ class PrecogClient:
         """
         config = get_config()
         self.wallet_name = config.get_wallet_name()
-        self.api_url = API_URL
+        self.api_url = os.getenv("API_URL", "https://precog-api.example.com")
         self.token_file = config.get_token_file()
     
     def _get_headers(self) -> Dict[str, str]:

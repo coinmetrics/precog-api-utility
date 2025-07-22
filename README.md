@@ -63,6 +63,16 @@ The client uses a configuration file at `~/.precog/config.json`:
 }
 ```
 
+### API URL Configuration
+
+Set the API endpoint using the `API_URL` environment variable:
+
+```bash
+export API_URL="https://your-precog-api-instance.com"
+```
+
+If not set, the client will use a default example URL.
+
 ## Authentication Requirements
 
 To check the current authentication requirements for the Precog API:
@@ -116,7 +126,7 @@ btcli stake add \
   --amount 1
 ```
 
-4. **Verify your stake**:
+4r. **Verify your stake**:
 ```bash
 btcli stake show --wallet.name YOUR_WALLET_NAME --wallet.hotkey YOUR_HOTKEY_NAME --netuid 55
 ```
@@ -202,7 +212,7 @@ except Exception as e:
 
 For complete API documentation including request/response schemas:
 
-**Swagger UI**: https://precog-api.non-prod.am.yuma-eng.com/docs
+**Swagger UI**: Access the interactive API documentation at `{API_URL}/docs` where `API_URL` is your configured API endpoint.
 
 ## Support
 
