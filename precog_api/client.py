@@ -35,6 +35,7 @@ class PrecogClient:
         self.wallet_name = config.get_wallet_name()
         self.api_url = os.getenv("API_URL", "https://precog-api.example.com")
         self.token_file = config.get_token_file()
+        self.session = requests.Session()
     
     def _get_headers(self) -> Dict[str, str]:
         """Get headers with valid authorization token"""
@@ -58,7 +59,7 @@ class PrecogClient:
         
         try:
             headers = self._get_headers()
-            response = requests.get(url, headers=headers, params=params)
+            response = self.session.get(url, headers=headers, params=params)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.HTTPError as e:
@@ -66,7 +67,7 @@ class PrecogClient:
                 # Try once more with refresh (in case token just expired)
                 if refresh_tokens_if_needed():
                     headers = self._get_headers()
-                    response = requests.get(url, headers=headers, params=params)
+                    response = self.session.get(url, headers=headers, params=params)
                     response.raise_for_status()
                     return response.json()
                 else:

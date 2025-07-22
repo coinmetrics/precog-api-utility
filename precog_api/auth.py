@@ -12,6 +12,10 @@ from typing import Dict, Any, Optional
 from .config import get_config
 
 
+# Create a shared session for all auth operations
+_session = requests.Session()
+
+
 def setup_authentication() -> bool:
     """
     Set up authentication for Precog API using current configuration
@@ -64,7 +68,7 @@ def setup_authentication() -> bool:
     try:
         # Step 1: Get challenge
         print("1. Requesting authentication challenge...")
-        response = requests.get(f"{api_url}/auth/challenge")
+        response = _session.get(f"{api_url}/auth/challenge")
         response.raise_for_status()
         challenge = response.json()
         
@@ -84,7 +88,7 @@ def setup_authentication() -> bool:
             "coldkey": coldkey.ss58_address
         }
         
-        response = requests.post(f"{api_url}/auth/authenticate", json=auth_data)
+        response = _session.post(f"{api_url}/auth/authenticate", json=auth_data)
         response.raise_for_status()
         
         tokens = response.json()
@@ -175,7 +179,7 @@ def save_tokens(tokens: Dict[str, Any], token_file: str = None):
 def refresh_access_token(refresh_token: str, api_url: str) -> Optional[Dict[str, Any]]:
     """Refresh access token using refresh token"""
     try:
-        response = requests.post(f"{api_url}/auth/refresh", json={"refresh_token": refresh_token})
+        response = _session.post(f"{api_url}/auth/refresh", json={"refresh_token": refresh_token})
         response.raise_for_status()
         
         tokens = response.json()
