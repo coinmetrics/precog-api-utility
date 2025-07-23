@@ -19,7 +19,19 @@ pip install -e .
 
 ### 1. Initial Setup
 
-First, authenticate with your Bittensor wallet:
+
+#### API URL Configuration
+
+Set the API endpoint using the `API_URL` environment variable:
+
+```bash
+export API_URL="https://precog-api-stg.cnmtrcs.io"
+```
+
+If not set, the client will use a default example URL.
+
+#### Get authentication token
+Then, authenticate with your Bittensor wallet:
 
 ```bash
 precog authenticate
@@ -62,16 +74,6 @@ The client uses a configuration file at `~/.precog/config.json`:
   "token_file": "~/.precog/tokens.json"
 }
 ```
-
-### API URL Configuration
-
-Set the API endpoint using the `API_URL` environment variable:
-
-```bash
-export API_URL="https://precog-api-stg.cnmtrcs.io"
-```
-
-If not set, the client will use a default example URL.
 
 ## Authentication Requirements
 
