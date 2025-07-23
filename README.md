@@ -25,7 +25,7 @@ pip install -e .
 Set the API endpoint using the `API_URL` environment variable:
 
 ```bash
-export API_URL="https://your-precog-api-instance.com"
+export API_URL="https://precog-api-stg.cnmtrcs.io"
 ```
 
 If not set, the client will use a default example URL.
