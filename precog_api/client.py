@@ -6,10 +6,33 @@ import requests
 import os
 from datetime import datetime
 from typing import Dict, Any, Optional
+import time
+import functools
 
 from .auth import get_valid_access_token, refresh_tokens_if_needed
 from .config import get_config
 
+PAGE_PAUSE = 0.1
+
+def paginate(endpoint_func):
+    @functools.wraps(endpoint_func)
+    def wrapper(self, *args, get_all_pages=False, **kwargs):
+        if get_all_pages:
+            has_next = True
+            page_results = []
+            while has_next:
+                output = endpoint_func(self, *args, **kwargs)
+                page_results.append(output)
+                # Extract has_next from output['pagination'] if present
+                has_next = output['pagination']['has_next']
+                # Update page for next iteration if paginating
+                if has_next:
+                    kwargs['page'] = output['pagination']['current_page'] + 1
+                    time.sleep(PAGE_PAUSE)  # Respect API rate limits
+            return page_results
+        else:
+            return endpoint_func(self, *args, **kwargs)
+    return wrapper
 
 class PrecogClient:
     """
@@ -63,7 +86,7 @@ class PrecogClient:
             response.raise_for_status()
             return response.json()
         except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 401:
+            if e.response is not None and e.response.status_code == 401:
                 # Try once more with refresh (in case token just expired)
                 if refresh_tokens_if_needed():
                     headers = self._get_headers()
@@ -129,7 +152,8 @@ class PrecogClient:
             raise ValueError("Limit must be a positive integer between 1 and 10000")
         
         return self._make_request(f"/predictions/recent/hotkey/{miner_hotkey}", {"limit": limit})
-    
+
+    @paginate
     def get_historical_predictions(
         self, 
         start_date: datetime, 
@@ -145,9 +169,11 @@ class PrecogClient:
             end_date: End date for query
             page: Page number (1-based)
             page_size: Number of items per page (100-10000)
-            
+            get_all_pages (bool, optional): If True, retrieves all pages and returns a list of results. Defaults to False.
+        
         Returns:
-            dict: API response with predictions and pagination info
+            dict: API response with predictions and pagination info (if get_all_pages is False)
+            list[dict]: List of API responses for all pages (if get_all_pages is True)
         """
         if not isinstance(start_date, datetime) or not isinstance(end_date, datetime):
             raise ValueError("start_date and end_date must be datetime objects")
@@ -169,7 +195,8 @@ class PrecogClient:
         }
         
         return self._make_request("/predictions/historical", params)
-    
+
+    @paginate
     def get_historical_predictions_by_uid(
         self, 
         miner_uid: int,
@@ -187,9 +214,11 @@ class PrecogClient:
             end_date: End date for query
             page: Page number (1-based)
             page_size: Number of items per page (100-10000)
-            
+            get_all_pages (bool, optional): If True, retrieves all pages and returns a list of results. Defaults to False.
+        
         Returns:
-            dict: API response with predictions and pagination info
+            dict: API response with predictions and pagination info (if get_all_pages is False)
+            list[dict]: List of API responses for all pages (if get_all_pages is True)
         """
         if not isinstance(miner_uid, int) or miner_uid < 0 or miner_uid > 255:
             raise ValueError("Miner UID must be an integer between 0 and 255")
@@ -214,7 +243,8 @@ class PrecogClient:
         }
         
         return self._make_request(f"/predictions/historical/uid/{miner_uid}", params)
-    
+
+    @paginate
     def get_historical_predictions_by_hotkey(
         self, 
         miner_hotkey: str,
@@ -232,9 +262,11 @@ class PrecogClient:
             end_date: End date for query
             page: Page number (1-based)
             page_size: Number of items per page (100-10000)
-            
+            get_all_pages (bool, optional): If True, retrieves all pages and returns a list of results. Defaults to False.
+        
         Returns:
-            dict: API response with predictions and pagination info
+            dict: API response with predictions and pagination info (if get_all_pages is False)
+            list[dict]: List of API responses for all pages (if get_all_pages is True)
         """
         if not isinstance(miner_hotkey, str) or len(miner_hotkey) != 48:
             raise ValueError("Miner hotkey must be a 48-character SS58 address")
