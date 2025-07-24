@@ -12,7 +12,7 @@ import functools
 from .auth import get_valid_access_token, refresh_tokens_if_needed
 from .config import get_config
 
-PAGE_PAUSE = 0.1
+PAGE_PAUSE = 0.15
 
 def paginate(endpoint_func):
     @functools.wraps(endpoint_func)
@@ -159,7 +159,7 @@ class PrecogClient:
         start_date: datetime, 
         end_date: datetime,
         page: int = 1,
-        page_size: int = 100
+        page_size: int = 10000
     ) -> Dict[str, Any]:
         """
         Get historical predictions for all miners
@@ -203,7 +203,7 @@ class PrecogClient:
         start_date: datetime, 
         end_date: datetime,
         page: int = 1,
-        page_size: int = 100
+        page_size: int = 10000
     ) -> Dict[str, Any]:
         """
         Get historical predictions for a specific miner by UID
@@ -251,7 +251,7 @@ class PrecogClient:
         start_date: datetime, 
         end_date: datetime,
         page: int = 1,
-        page_size: int = 100
+        page_size: int = 10000
     ) -> Dict[str, Any]:
         """
         Get historical predictions for a specific miner by hotkey
