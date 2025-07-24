@@ -226,3 +226,8 @@ For complete API documentation including request/response schemas:
 
 For issues and questions, please reach out on Discord:
 https://discordapp.com/channels/799672011265015819/1320766712508977192
+
+## Terms and Conditions
+
+All data and engagement with the Precog API is subject to the same terms as our Coin Metrics Community Data: https://coinmetrics.io/terms-of-use/
+
