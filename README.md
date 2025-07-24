@@ -214,7 +214,7 @@ except Exception as e:
 
 For complete API documentation including request/response schemas:
 
-**Swagger UI**: Access the interactive API documentation at `{API_URL}/docs` where `API_URL` is your configured API endpoint.
+**Swagger UI**: Access the interactive API documentation at `https://precog-api-stg.cnmtrcs.io/docs`.
 
 ## Support
 
