@@ -31,7 +31,7 @@ pip install -e .
 Set the API endpoint using the `API_URL` environment variable:
 
 ```bash
-export API_URL="https://precog-api-stg.cnmtrcs.io"
+export API_URL="{YOUR URL HERE}"
 ```
 
 If not set, the client will use a default example URL.
@@ -220,7 +220,7 @@ except Exception as e:
 
 For complete API documentation including request/response schemas:
 
-**Swagger UI**: Access the interactive API documentation at `https://precog-api-stg.cnmtrcs.io/docs`.
+**Swagger UI**: Access the interactive API documentation at `{API_URL}/docs`.
 
 ## Support
 
