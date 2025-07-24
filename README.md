@@ -10,7 +10,13 @@ A Python client for the Precog API with automatic token management and Bittensor
 - **Error Handling**: Graceful handling of token expiry and network errors
 
 ## Installation
+(Optional) Create a virtual environment to install dependencies:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
+Install dependencies:
 ```bash
 pip install -e .
 ```
