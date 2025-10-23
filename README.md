@@ -149,16 +149,27 @@ The client uses Bittensor wallet authentication with automatic token refresh:
 ### Recent Predictions
 
 ```python
-# All miners
+# All miners, all assets
 predictions = client.get_recent_predictions(limit=100)
+
+# Filter by asset type
+btc_predictions = client.get_recent_predictions(limit=100, asset_type="BTC")
+eth_predictions = client.get_recent_predictions(limit=100, asset_type="ETH")
+tao_predictions = client.get_recent_predictions(limit=100, asset_type="TAO")
 
 # Specific miner by UID
 predictions = client.get_recent_predictions_by_uid(miner_uid=42, limit=100)
+predictions = client.get_recent_predictions_by_uid(miner_uid=42, limit=100, asset_type="BTC")
 
 # Specific miner by hotkey
 predictions = client.get_recent_predictions_by_hotkey(
     miner_hotkey="5EgvTaftth7S7Gz9UpnLm2AbCdS9wcw8HeZfVrxNrLippUfC",
     limit=100
+)
+predictions = client.get_recent_predictions_by_hotkey(
+    miner_hotkey="5EgvTaftth7S7Gz9UpnLm2AbCdS9wcw8HeZfVrxNrLippUfC",
+    limit=100,
+    asset_type="ETH"
 )
 ```
 
@@ -167,12 +178,19 @@ predictions = client.get_recent_predictions_by_hotkey(
 ```python
 from datetime import datetime
 
-# All miners
+# All miners, all assets
 historical = client.get_historical_predictions(
     start_date=datetime(2024, 1, 1),
     end_date=datetime(2024, 1, 7),
     page=1,
     page_size=1000
+)
+
+# Filter by asset type
+btc_historical = client.get_historical_predictions(
+    start_date=datetime(2024, 1, 1),
+    end_date=datetime(2024, 1, 7),
+    asset_type="BTC"
 )
 
 # Specific miner by UID
@@ -182,11 +200,25 @@ historical = client.get_historical_predictions_by_uid(
     end_date=datetime(2024, 1, 7)
 )
 
+historical = client.get_historical_predictions_by_uid(
+    miner_uid=42,
+    start_date=datetime(2024, 1, 1),
+    end_date=datetime(2024, 1, 7),
+    asset_type="ETH"
+)
+
 # Specific miner by hotkey
 historical = client.get_historical_predictions_by_hotkey(
     miner_hotkey="5EgvTaftth7S7Gz9UpnLm2AbCdS9wcw8HeZfVrxNrLippUfC",
     start_date=datetime(2024, 1, 1),
     end_date=datetime(2024, 1, 7)
+)
+
+historical = client.get_historical_predictions_by_hotkey(
+    miner_hotkey="5EgvTaftth7S7Gz9UpnLm2AbCdS9wcw8HeZfVrxNrLippUfC",
+    start_date=datetime(2024, 1, 1),
+    end_date=datetime(2024, 1, 7),
+    asset_type="TAO"
 )
 ```
 
