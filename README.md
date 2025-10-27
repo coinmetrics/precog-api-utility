@@ -10,7 +10,13 @@ A Python client for the Precog API with automatic token management and Bittensor
 - **Error Handling**: Graceful handling of token expiry and network errors
 
 ## Installation
+(Optional) Create a virtual environment to install dependencies:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
+Install dependencies:
 ```bash
 pip install -e .
 ```
@@ -19,7 +25,19 @@ pip install -e .
 
 ### 1. Initial Setup
 
-First, authenticate with your Bittensor wallet:
+
+#### API URL Configuration
+
+Set the API endpoint using the `API_URL` environment variable:
+
+```bash
+export API_URL="https://precog-api.coinmetrics.io"
+```
+
+If not set, the client will use a default example URL.
+
+#### Get authentication token
+Then, authenticate with your Bittensor wallet:
 
 ```bash
 precog authenticate
@@ -62,16 +80,6 @@ The client uses a configuration file at `~/.precog/config.json`:
   "token_file": "~/.precog/tokens.json"
 }
 ```
-
-### API URL Configuration
-
-Set the API endpoint using the `API_URL` environment variable:
-
-```bash
-export API_URL="https://your-precog-api-instance.com"
-```
-
-If not set, the client will use a default example URL.
 
 ## Authentication Requirements
 
@@ -244,9 +252,14 @@ except Exception as e:
 
 For complete API documentation including request/response schemas:
 
-**Swagger UI**: Access the interactive API documentation at `{API_URL}/docs` where `API_URL` is your configured API endpoint.
+**Swagger UI**: Access the interactive API documentation at `https://precog-api.coinmetrics.io/docs`.
 
 ## Support
 
 For issues and questions, please reach out on Discord:
 https://discordapp.com/channels/799672011265015819/1320766712508977192
+
+## Terms and Conditions
+
+All data and engagement with the Precog API is subject to the same terms as our Coin Metrics Community Data: https://coinmetrics.io/terms-of-use/
+
