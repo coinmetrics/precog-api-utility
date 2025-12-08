@@ -1,3 +1,7 @@
+# NOTICE
+
+### The Precog API is currently not supported. Breaking changes in the Subnet and later changes in the backend infrastructure require coordination between different teams to bring it back and they are currently blocked with other tasks.  We apologize for the inconvenience.
+
 # Precog API Client
 
 A Python client for the Precog API with automatic token management and Bittensor wallet authentication.
